@@ -1,0 +1,29 @@
+# Site settings
+title: "Hidoba research"
+email: research@hidoba.com
+url: https://hidoba.com
+description: "A not-yet-known AI initiative in Hong Kong consisting of 5 humble people who believe they know how to change the world."
+
+# Color settings (hex-codes without the leading hash-tag)
+color:
+  primary-dark: '#FFFFFF'
+  links: '#219ab3'
+
+# Footer settings
+footer: Vladimir Grankovsky
+
+# Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
+subscribe:
+#  - title: facebook
+#    url: https://www.facebook.com/
+
+social:
+#  - title: facebook
+#    url: https://www.facebook.com/
+#  - title: linkedin
+#    url: https://www.linkedin.com/
+
+
+# Build settings
+markdown: kramdown
+permalink: pretty

@@ -1,0 +1,36 @@
+ <!-- jQuery Version 1.11.0 -->
+    <script src="{{ "/js/jquery.js" | prepend: site.baseurl }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ "/js/bootstrap.min.js" | prepend: site.baseurl }}"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="{{ "/js/jquery.easing.min.js" | prepend: site.baseurl }}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ "/js/grayscale.js" | prepend: site.baseurl }}"></script>
+
+    <script>
+      // what should we do when scrolling occurs
+      // var runOnScroll =  function(evt) {
+
+      // };
+
+      // window.addEventListener('scroll', function(e) {
+      //   runOnScroll();
+      // });
+      // runOnScroll();
+
+
+var vid = document.getElementById('v0'); 
+
+// Use requestAnimationFrame for smooth playback
+function scrollPlay(){
+  vid.currentTime  = window.pageYOffset / 60.;
+  window.requestAnimationFrame(scrollPlay);
+}
+
+window.requestAnimationFrame(scrollPlay);
+
+
+    </script>
