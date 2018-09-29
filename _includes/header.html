@@ -2,13 +2,16 @@
     <header class="intro    content-section">
         <div class="intro-body">
             <div class="container">
+                
                 <div class="row" style="padding-top: 50px">
 
                     <div class="col-lg-8 col-lg-offset-2" style="background-color: #FFFFFF66;">
                         <h1 class="brand-heading">{% if page.language == 'EN' %} {{ site.title }} {% else %} {{ page.title }} {% endif %}</h1>
                         <p class="intro-text">{% if page.language == 'EN' %} {{ site.description }} {% else %} {{ page.description }} {% endif %}<br>
-                        <video id="v0" tabindex="0" autobuffer="autobuffer" preload="preload"><source type="video/mp4;" src="/img/vid0.mp4"></source>
-</video>
+                        <video playsinline id="v0">
+                        </video>
+
+
                     </div>
                 </div>
             </div>

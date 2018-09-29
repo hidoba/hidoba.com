@@ -11,26 +11,57 @@
     <script src="{{ "/js/grayscale.js" | prepend: site.baseurl }}"></script>
 
     <script>
-      // what should we do when scrolling occurs
-      // var runOnScroll =  function(evt) {
 
+var vid = document.getElementById('v0'); 
+
+                        
+    const req = new XMLHttpRequest();
+
+    req.open('get', "/img/vid0.mp4", true);
+    req.responseType = 'blob';
+    req.withCredentials = false;
+
+    req.onload = () => {
+      //vid.addEventListener('loadeddata', () => this.init());
+      vid.src = window.URL.createObjectURL(req.response);
+    };
+
+    // req.onprogress = (requestProgress) => {
+    //   const percentage = Math.round(requestProgress.loaded / requestProgress.total * 100);
+
+    //   if(this.debug)
+    //     console.log('onprogress', percentage + '%');
+    // };
+
+    // req.onreadystatechange = () => {
+    //   if (this.debug)
+    //     console.log('onreadystatechange', req.readyState);
+    // };
+
+    req.send();
+                        
+
+// // Use requestAnimationFrame for smooth playback
+function scrollPlay(){
+  vid.currentTime  = window.pageYOffset / 60.;
+  vid.pause();
+  //vid.fastSeek(window.pageYOffset / 60.);
+  window.requestAnimationFrame(scrollPlay);
+}
+
+window.requestAnimationFrame(scrollPlay);
+
+
+      // // what should we do when scrolling occurs
+      // var runOnScroll =  function(evt) {
+      //   vid.currentTime  = window.pageYOffset / 60.;
       // };
 
       // window.addEventListener('scroll', function(e) {
       //   runOnScroll();
       // });
-      // runOnScroll();
+      //runOnScroll();
 
-
-var vid = document.getElementById('v0'); 
-
-// Use requestAnimationFrame for smooth playback
-function scrollPlay(){
-  vid.currentTime  = window.pageYOffset / 60.;
-  window.requestAnimationFrame(scrollPlay);
-}
-
-window.requestAnimationFrame(scrollPlay);
 
 
     </script>

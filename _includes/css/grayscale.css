@@ -72,7 +72,7 @@ a:focus {
     margin-bottom: 0;
     border-bottom: 1px solid rgba(255,255,255,.3);
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    background-color: #000000;
+    background-color: #FFFFFFEE;
 }
 
 .navbar-custom .language-current {
@@ -126,7 +126,7 @@ a:focus {
 }
 
 .top-nav-collapse a {
-    color: #fff;
+    color: #555;
     text-decoration: none;
 }
 
@@ -148,12 +148,11 @@ a:focus {
     background-color: rgba(255,255,255,.3);
 }
 
-@media(min-width:767px) {
+@media(min-width:100px) {
     .navbar {
         padding: 20px 0;
         border-bottom: 0;
         letter-spacing: 1px;
-        background: 0 0;
         -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
         -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
         transition: background .5s ease-in-out,padding .5s ease-in-out;
@@ -161,7 +160,7 @@ a:focus {
 
     .top-nav-collapse {
         padding: 0;
-        background-color: #000000;
+        background-color: #EEEEEECC;
     }
 
     .navbar-custom.top-nav-collapse {
@@ -347,47 +346,6 @@ a:focus {
     }
 }
 
-.projects-section, .reviews-section {
-    width: 100%;
-    padding: 50px 0;
-    color: #fff;
-
-}
-
-.projects-section {
-    background: url(/img/projects-bg.jpg) no-repeat top center scroll;
-    background-color: black;
-}
-
-@media(max-width: 700px){
-    .projects-section {
-        background: url(/img/projects-bg.jpg) no-repeat top center scroll;
-        background-color: black;
-    }
-}
-
-@media(max-width: 500px){
-    .projects-section {
-        
-    }
-}
-
-.reviews-section {
-    width: 100%;
-    padding: 50px 0;
-    color: #fff;
-    background: url(/img/reviews-bg.jpg) no-repeat top center scroll;
-    background-color: black;
-
-}
-
-@media(max-width: 300px){
-    .projects-section, .reviews-section {
-        padding-top: 20px;
-        padding-bottom: 10px;
-    }
-}
-
 .projects-button {
     margin-left: 10px;
 }
@@ -403,13 +361,6 @@ a:focus {
         padding-top: 100px;
     }
 
-    .projects-section {
-        padding: 100px 0;
-    }
-
-    .reviews-section {
-        padding: 100px 0;
-    }
 
     #map {
         height: 400px;
