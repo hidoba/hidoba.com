@@ -43,6 +43,13 @@
         vid.autoplay = "autoplay";
         vid.loop = "loop";
 
+        // if chrome data saver is ON
+        if('connection' in navigator){
+         if(navigator.connection.saveData){
+          vid.controls = "controls";
+         }
+        }
+
         // var runOnScroll =  function(evt) {
         //   vid.currentTime  = window.pageYOffset / 60.;
         // };
