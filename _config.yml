@@ -4,6 +4,12 @@ email: research@hidoba.com
 url: https://hidoba.com
 description: "A not-yet-known AI initiative in Hong Kong consisting of 5 humble people who believe they know how to change the world."
 
+txtEmail: Email Address
+txtAddSocial: 'Please consider adding our social network page:'
+txtContact: Contact
+txtContactText: 'We are located in Hong Kong and are available for an appointment. You may contact our respectful staff at:'
+txtCopyright: Copyright
+
 # Color settings (hex-codes without the leading hash-tag)
 color:
   primary-dark: '#FFFFFF'
