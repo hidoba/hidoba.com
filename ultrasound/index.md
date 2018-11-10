@@ -8,7 +8,7 @@ layout: simple
 
 I've never intended to put the sources online, but since many people asked, here we go.
 
-The circuit was "post-adjusted" for 75V, I'm not sure about any other modifications. Pay attention at the inductor in series with ultrasound speakers (value may need to be adjusted). When connecting speakers, mind polarity.
+The circuit was "post-adjusted" for 45-75V (not 100% sure which one it was), I don't remember about any other modifications. Pay attention at the inductor in series with ultrasound speakers (value may need to be adjusted). When connecting speakers, mind polarity. I don't exactly remember which particular ultrasound transducer was used.
 
 [PCB files (492 KB zip file)](UltrasoundPCB2011.zip)
 
