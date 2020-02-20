@@ -18,7 +18,7 @@ html {
 }
 
 h1,
-h2
+h2,.big
  {
     margin: 0 0 35px;
     text-transform: uppercase;
