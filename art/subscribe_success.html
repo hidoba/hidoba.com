@@ -1,0 +1,19 @@
+---
+language: EN
+title: Thank you for your subscription!
+description: Thank you for subscribing to the Hidoba AI / Robotics art news mailing list.
+layout: simple
+---
+                <h2>{{ page.title }}</h2>
+                <p id="toAppendEmail">{{ page.description }} You should receive an email from us within a few minutes</p>
+                <p>Please, check out our <a href="https://www.instagram.com/hidobaresearch/"><img src="/img/ig.png" width="20" height="20" style="margin-bottom: 5px; margin-right: 3px" />Instagram @hidobaresearch</a> as well.
+                </p>
+                <script>
+                    var url_string = window.location.href;
+                    var url = new URL(url_string);
+                    var c = url.searchParams.get("email");
+                    if (c != "" && c != null)
+                        document.getElementById("toAppendEmail").innerHTML += " (coming to the address you gave us: " + c + ").";
+                    else
+                        document.getElementById("toAppendEmail").innerHTML += ".";
+                </script>
