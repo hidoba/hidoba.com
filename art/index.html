@@ -25,7 +25,7 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
     <!-- Main section -->
     <section id="about" style="position: relative; margin-top:100vh; background: white; color: white; text-shadow: 1px 1px 15px #000, 1px 1px 10px #555; padding-top: 80px; padding-bottom: 100px">
         <div style="position: absolute; top:0; left:0; width: 100%; height: 100%; overflow: hidden">
-            <img id="interchangeIMG" style="width: 100%; top: 0" src="interchange.jpg" />
+            <img id="interchangeIMG" style="width: 100%; top: 0" src="/img/interchange.jpg" />
             <video muted playsinline id="interchangeVID" style="width: 100%; top: 0"></video>
         </div>
         <div class="spacer s0" id="trigger"></div>
@@ -100,7 +100,7 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
         const video = document.getElementById('interchangeVID'); 
         const about = document.getElementById('about');
         const req = new XMLHttpRequest();
-        req.open('get', "interchange.mp4", true);
+        req.open('get', "/img/interchange.mp4", true);
         req.responseType = 'blob';
         req.withCredentials = false;
 
