@@ -18,7 +18,7 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
             <div class="intro-body" style="position: relative; height: 100%; vertical-align: middle;">
                 <div class="container">
                     <div class="row" style="padding-top: 50px">
-                        <p id="txtBig" class="big" style="font-size: 150pt; line-height: 0.6">BIG</p>
+                        <p id="txtBig" class="big">BIG</p>
                         <p class="big" style="font-size: 30pt">change is coming<br></p>
                         <div id="preloader">
                             <div class="txt">
@@ -121,17 +121,21 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
         var scene = new ScrollMagic.Scene({offset:0});
         let scrollpos = 0;
         let lastpos = -1;
+        let oldDeviceWidth = -1;
+        let oldDeviceHeight = -1;
         function scrollPlay(){
-            if (scrollpos != lastpos){
-                var deviceWidth = window.innerWidth;
-                var deviceHeight = window.document.documentElement.clientHeight; // stable on mobile
+            var deviceWidth = window.innerWidth;
+            var deviceHeight = window.document.documentElement.clientHeight; // stable on mobile
+            if (scrollpos != lastpos || oldDeviceWidth != deviceWidth || oldDeviceHeight != deviceHeight){
                 canvas.width = deviceWidth;
                 canvas.height = deviceHeight;
                 var scale = deviceWidth / img.width;
                 var y = Math.max((deviceHeight - img.height * scale) / 2, 0);
                 ctx.drawImage(images[scrollpos], 0, y, deviceWidth, img.height * scale);
+                lastpos = scrollpos;
+                oldDeviceWidth = deviceWidth;
+                oldDeviceHeight = deviceHeight;
             }
-            lastpos = scrollpos;
             window.requestAnimationFrame(scrollPlay);
         }
         function initPaintingAnimation() {

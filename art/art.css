@@ -1,3 +1,13 @@
+#txtBig {
+    font-size: 150pt; line-height: 0.6;
+}
+
+@media (max-width: 400px) {
+    #txtBig {
+        font-size: 100pt;
+    }
+}
+
 /* =Preloader */
 #preloader {
   position: absolute;
