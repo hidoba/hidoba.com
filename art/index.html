@@ -12,7 +12,7 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
     <!-- Intro Header -->
     <header class="intro content-section" style="padding: 0; top: 0; left: 0; height: 100%">
         <div id="intro" class="intro" style="position: absolute; top:0; left:0; width: 100%; height: 100%; overflow: hidden;">
-            <div id="interchangeContainer" style="position: absolute; top:0; left:0; width: 100%; height: 100%; overflow: hidden">
+            <div id="interchangeContainer" style="position: absolute; top:0; left:0; width: 100%; height: 100%; overflow: hidden; visibility: hidden">
                 
                 <canvas id="interchange" style="width: 100%; height: 100%; top: 0;"></canvas>
             </div>
@@ -144,13 +144,15 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
             var preloaderOutTl = new TimelineMax();
             $("body").attr("class", "");
             preloaderOutTl
-                .to($('.progress'), 0.3, {y: 100, autoAlpha: 0, ease:Back.easeIn})
-                .to($('.txt-perc'), 0.3, {y: 100, autoAlpha: 0, ease:Back.easeIn}, 0.1)
-                //.set($('body'), {className: '-=is-loading'})
-                .to($('#preloader'), 0.7, {yPercent: 100, ease:Power4.easeInOut})
-                .set($('#preloader'), {className: '+=is-hidden'})
-                .from($('#scroll-hint'), 0.3, {y: -20, autoAlpha: 0, ease:Power1.easeOut}, '+=0.1');
-
+                .add([
+                    TweenMax.to($('#interchangeContainer'), 0.5, {autoAlpha: 1, ease:Back.easeIn}),
+                    TweenMax.to($('.progress'), 0.3, {y: 100, autoAlpha: 0, ease:Back.easeIn}),
+                    TweenMax.to($('.txt-perc'), 0.3, {y: 100, autoAlpha: 0, ease:Back.easeIn}),
+                    //.set($('body'), {className: '-=is-loading'})
+                    TweenMax.to($('#preloader'), 0.7, {yPercent: 100, ease:Power4.easeInOut}),
+                    TweenMax.set($('#preloader'), {className: '+=is-hidden'}),
+                    TweenMax.from($('#scroll-hint'), 0.3, {y: -20, autoAlpha: 0, ease:Power1.easeOut})
+                    ]);
             return preloaderOutTl;
         }
 
