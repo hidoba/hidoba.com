@@ -61,7 +61,7 @@ a {
 a:hover,
 a:focus {
     text-decoration: none;
-    color: #11505d;
+    color: #000;
 }
 
 .light {
