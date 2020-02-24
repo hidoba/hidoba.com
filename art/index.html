@@ -83,25 +83,38 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
     <script>
         var totalImages = 62;
         var loadedCount = 0;
-        var images = new Array();
+        var renderedCount = 0;
+        var imagesStrokes = new Array();
+        var images = [];
         let oldDeviceWidth = window.innerWidth;
         let oldDeviceHeight = -1;
+        var canvasTmp = document.createElement('canvas');
+        var ctxTmp = canvasTmp.getContext('2d');
         for (var i = 1; i <= totalImages; i++) {
             var img = new Image;
             img.onload = function(){
+                console.log(loadedCount);
                 loadedCount++;
-                loadingProgress = (loadedCount/(totalImages));
+                loadingProgress = 0.95*(loadedCount/totalImages);
                 TweenLite.to(progressTl, 0.7, {progress:loadingProgress, ease:Linear.easeNone})
                 if (loadedCount == totalImages) {
+                    console.log("loaded all. rendering.");
+                    canvasTmp.width = imagesStrokes[0].width;
+                    canvasTmp.height = imagesStrokes[0].height;
+                    ctxTmp.fillStyle = "#FFF";
+                    ctxTmp.fillRect(0, 0, canvasTmp.width, canvasTmp.height);
+                    for(var j = 0; j < totalImages; j++){
+                        ctxTmp.drawImage(imagesStrokes[j], 0, 0, canvasTmp.width, canvasTmp.height);
+                        images.push(ctxTmp.getImageData(0, 0, canvasTmp.width, canvasTmp.height))
+                    }
+                    TweenLite.to(progressTl, 0.7, {progress:1, ease:Linear.easeNone})
                     initPaintingAnimation();
                 }
             };
-            if(oldDeviceWidth < 600)
-                img.src = 'interchange/' + i + '.jpg'
-            else
-                img.src = 'interchange_large/' + i + '.jpg'
-            images.push(img);
+            img.src = 'interchange/' + i + '.png'
+            imagesStrokes.push(img);
         }
+
         var progressTl = new TimelineMax({paused:true,onUpdate:progressUpdate,onComplete:loadComplete});
         progressTl.to($('.progress span'), 1, {width:100, ease:Linear.easeNone});
         function progressUpdate(){
@@ -133,11 +146,11 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
             var deviceWidth = window.innerWidth * 2;
             var deviceHeight = window.document.documentElement.clientHeight * 2; // stable on mobile
             if (scrollpos != lastpos || oldDeviceWidth != deviceWidth || oldDeviceHeight != deviceHeight){
-                canvas.width = deviceWidth;
-                canvas.height = deviceHeight;
-                var scale = deviceWidth / img.width;
-                var y = Math.max((deviceHeight - img.height * scale) / 2, 0);
-                ctx.drawImage(images[scrollpos], 0, y, deviceWidth, img.height * scale);
+                canvas.width = imagesStrokes[0].width;
+                canvas.height = deviceHeight / deviceWidth * imagesStrokes[0].width;
+                var scale = deviceWidth / images[scrollpos].width;
+                var y = Math.max((deviceHeight - images[scrollpos].height * scale) / 2, 0);
+                ctx.putImageData(images[scrollpos], 0, y);
                 lastpos = scrollpos;
                 oldDeviceWidth = deviceWidth;
                 oldDeviceHeight = deviceHeight;
