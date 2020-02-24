@@ -86,7 +86,10 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
         var renderedCount = 0;
         var imagesStrokes = new Array();
         var images = [];
-        let oldDeviceWidth = window.innerWidth;
+        let jpgMode = false;
+        if (window.innerWidth <= 600)
+            jpgMode = true;
+        let oldDeviceWidth = -1;
         let oldDeviceHeight = -1;
         var canvasTmp = document.createElement('canvas');
         var ctxTmp = canvasTmp.getContext('2d');
@@ -119,16 +122,22 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
         for (var i = 1; i <= totalImages; i++) {
             var img = new Image;
             img.onload = function(){
-                console.log(loadedCount);
                 loadedCount++;
-                loadingProgress = 0.95*(loadedCount/totalImages);
+                loadingProgress = (jpgMode ? 1.0 : 0.95)*(loadedCount/totalImages);
                 TweenLite.to(progressTl, 0.7, {progress:loadingProgress, ease:Linear.easeNone})
                 if (loadedCount == totalImages) {
-                    renderImages();
+                    if(jpgMode)
+                        initPaintingAnimation();
+                    else
+                        renderImages();
                 }
             };
-            img.src = 'interchange/' + i + '.png'
-            imagesStrokes.push(img);
+
+            img.src = 'interchange/' + i + (jpgMode ? '.jpg' : '.png');
+            if(jpgMode)
+                images.push(img);
+            else
+                imagesStrokes.push(img);
         }
 
         var progressTl = new TimelineMax({paused:true,onUpdate:progressUpdate,onComplete:loadComplete});
@@ -162,12 +171,21 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
             var deviceWidth = window.innerWidth;
             var deviceHeight = window.document.documentElement.clientHeight; // stable on mobile
             if (scrollpos != lastpos || oldDeviceWidth != deviceWidth || oldDeviceHeight != deviceHeight){
-                canvas.width = imagesStrokes[0].width;
-                canvas.height = deviceHeight / deviceWidth * imagesStrokes[0].width;
+                if(jpgMode){
+                    canvas.width = deviceWidth * 2;
+                    canvas.height = deviceHeight * 2;
+                }
+                else{
+                    canvas.width = imagesStrokes[0].width;
+                    canvas.height = deviceHeight / deviceWidth * imagesStrokes[0].width;
+                }
                 var scale = deviceWidth / images[scrollpos].width;
                 var y = Math.max(((deviceHeight - images[scrollpos].height * scale) / 2) * (canvas.width / deviceWidth), 0);
                 //var y = Math.max((deviceHeight - images[scrollpos].height * scale) / 2, 0);
-                ctx.putImageData(images[scrollpos], 0, y);
+                if(jpgMode)
+                    ctx.drawImage(images[scrollpos], 0, y, canvas.width, images[scrollpos].height * scale * 2);
+                else
+                    ctx.putImageData(images[scrollpos], 0, y);
                 lastpos = scrollpos;
                 oldDeviceWidth = deviceWidth;
                 oldDeviceHeight = deviceHeight;
