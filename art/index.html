@@ -84,6 +84,8 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
         var totalImages = 62;
         var loadedCount = 0;
         var images = new Array();
+        let oldDeviceWidth = window.innerWidth;
+        let oldDeviceHeight = -1;
         for (var i = 1; i <= totalImages; i++) {
             var img = new Image;
             img.onload = function(){
@@ -94,7 +96,10 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
                     initPaintingAnimation();
                 }
             };
-            img.src = 'interchange/' + i + '.jpg'
+            if(oldDeviceWidth < 600)
+                img.src = 'interchange/' + i + '.jpg'
+            else
+                img.src = 'interchange_large/' + i + '.jpg'
             images.push(img);
         }
         var progressTl = new TimelineMax({paused:true,onUpdate:progressUpdate,onComplete:loadComplete});
@@ -123,11 +128,10 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
         var scene = new ScrollMagic.Scene({offset:0});
         let scrollpos = 0;
         let lastpos = -1;
-        let oldDeviceWidth = -1;
-        let oldDeviceHeight = -1;
+
         function scrollPlay(){
-            var deviceWidth = window.innerWidth;
-            var deviceHeight = window.document.documentElement.clientHeight; // stable on mobile
+            var deviceWidth = window.innerWidth * 2;
+            var deviceHeight = window.document.documentElement.clientHeight * 2; // stable on mobile
             if (scrollpos != lastpos || oldDeviceWidth != deviceWidth || oldDeviceHeight != deviceHeight){
                 canvas.width = deviceWidth;
                 canvas.height = deviceHeight;
