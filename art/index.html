@@ -164,7 +164,7 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
         function scrollPlay(){
             if (scrollpos != lastpos){
                 var deviceWidth = window.innerWidth;
-                var deviceHeight = window.innerHeight;
+                var deviceHeight = window.document.documentElement.clientHeight;
                 canvas.width = deviceWidth;
                 canvas.height = deviceHeight;
                 var scale = deviceWidth / img.width;
