@@ -2,12 +2,12 @@
 language: EN
 title: AI Art Revolution
 description: Register for the revolutionizing exhibition of AI-generated and robot-made paintings
-scripts: <script type="text/javascript" src="/js/jquery.js"></script><script type="text/javascript" src="/js/scrollmagic/highlight.pack.js"></script><script type="text/javascript" src="/js/scrollmagic/modernizr.custom.min.js"></script><script type="text/javascript" src="/js/scrollmagic/gsap3/gsap.min.js"></script><script type="text/javascript" src="/js/scrollmagic/ScrollMagic.min.js"></script><script type="text/javascript" src="/js/scrollmagic/plugins/animation.gsap.min.js"></script><script type="text/javascript" src="/js/scrollmagic/plugins/debug.addIndicators.min.js"></script>
+scripts: <script type="text/javascript" src="/js/jquery.js"></script><script type="text/javascript" src="/js/scrollmagic/highlight.pack.js"></script><script type="text/javascript" src="/js/scrollmagic/modernizr.custom.min.js"></script><script type="text/javascript" src="/js/scrollmagic/gsap3/gsap.min.js"></script><script type="text/javascript" src="/js/scrollmagic/ScrollMagic.min.js"></script><script type="text/javascript" src="/js/scrollmagic/plugins/animation.gsap.min.js"></script><link rel="stylesheet" href="art.css">
 ---
 <!DOCTYPE html>
 <html>
     {% include head.html %}
-    <body id="page-top">
+    <body class="is-loading">
 
     <!-- Intro Header -->
     <header class="intro content-section" style="padding: 0; top: 0; left: 0; height: 100%">
@@ -21,7 +21,13 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
                     <div class="row" style="padding-top: 50px">
                         <p id="txtBig" class="big" style="font-size: 150pt; line-height: 0.6">BIG</p>
                         <p class="big" style="font-size: 30pt">change is coming<br></p>
+                        <div id="preloader">
+                            <div class="txt">
+                                <p class="txt-perc">0%</p>
+                                <div class="progress"><span></span></div>
+                            </div>
                         </div>
+                        <span id="scroll-hint">Scroll Down</span>
                     </div>
                 </div>
             </div>
@@ -93,13 +99,61 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
     
 
     <script>
-        var images = new Array();
         var totalImages = 62;
+        var loadedCount = 0; //current number of images loaded
+        var images = new Array();
+        
         for (var i = 1; i <= totalImages; i++) {
-          var img = new Image;
-          img.src = 'interchange/' + i + '.jpg'
-          images.push(img);
+            var img = new Image;
+            img.onload = function() {
+                //one more image has been loaded
+                loadedCount++;
+                loadingProgress = (loadedCount/(totalImages));
+
+                // GSAP timeline for our progress bar
+                TweenLite.to(progressTl, 0.7, {progress:loadingProgress, ease:Linear.easeNone})
+                if (loadedCount == totalImages) {
+                    initPaintingAnimation();
+                }
+            };
+            img.src = 'interchange/' + i + '.jpg'
+            images.push(img);
         }
+
+
+        //progress animation instance. the instance's time is irrelevant, can be anything but 0 to void  immediate render
+        var progressTl = new TimelineMax({paused:true,onUpdate:progressUpdate,onComplete:loadComplete});
+
+        progressTl
+            //tween the progress bar width
+            .to($('.progress span'), 1, {width:100, ease:Linear.easeNone});
+
+        //as the progress bar witdh updates and grows we put the precentage loaded in the screen
+        function progressUpdate()
+        {
+            //the percentage loaded based on the tween's progress
+            loadingProgress = Math.round(progressTl.progress() * 100);
+            //we put the percentage in the screen
+            $(".txt-perc").text(loadingProgress + '%');
+
+        }
+
+        function loadComplete() {
+
+            // preloader out
+            var preloaderOutTl = new TimelineMax();
+            $("body").attr("class", "");
+            preloaderOutTl
+                .to($('.progress'), 0.3, {y: 100, autoAlpha: 0, ease:Back.easeIn})
+                .to($('.txt-perc'), 0.3, {y: 100, autoAlpha: 0, ease:Back.easeIn}, 0.1)
+                //.set($('body'), {className: '-=is-loading'})
+                .to($('#preloader'), 0.7, {yPercent: 100, ease:Power4.easeInOut})
+                .set($('#preloader'), {className: '+=is-hidden'})
+                .from($('#scroll-hint'), 0.3, {y: -20, autoAlpha: 0, ease:Power1.easeOut}, '+=0.1');
+
+            return preloaderOutTl;
+        }
+
         var canvas = document.getElementById("interchange");
         var ctx = canvas.getContext("2d");
         const about = document.getElementById('about');
@@ -120,12 +174,20 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
             lastpos = scrollpos;
             window.requestAnimationFrame(scrollPlay);
         }
-        images[0].onload = function() {
+
+        function initPaintingAnimation() {
+            var tween = new TimelineMax ()
+                .add([
+                    TweenMax.to("#txtBig", 1, {scale: 3, autoAlpha: 0, ease:Power1.easeInOut}),
+                    TweenMax.to('#scroll-hint', 1, {autoAlpha: 0, ease:Power1.easeInOut})
+                ]);
             scene.addTo(controller)
-                .addIndicators() // add indicators (requires plugin)
+                //.addIndicators() // add indicators (requires plugin)
                 .duration(window.innerHeight)
                 .setPin("#intro")
-                .setTween("#txtBig", {scale: 3, opacity:0})
+                //.setTween("#scroll-hint", {opacity:0})
+                //.setTween("#txtBig", {scale: 3, opacity:0})
+                .setTween(tween)
                 .on("progress", function (e) {
                     scrollpos = Math.round(e.progress*(totalImages-1));
                     //console.log(scrollpos);

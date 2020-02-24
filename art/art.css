@@ -1,0 +1,58 @@
+/* =Preloader */
+#preloader {
+  position: absolute;
+  width: 100%;
+  margin-top: 50px;
+  z-index: 101;
+  left: 0;
+  right: 0;
+  }
+  #preloader .txt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
+  #preloader .txt-perc {
+    font-size: 35px;
+    font-family: 'Roboto Condensed', Helvetica, Helvetica Neue, Arial, sans-serif;
+    opacity: 1;
+    margin: 0 0 6px 0;
+    max-width: 400px;
+    text-align: center; }
+  #preloader .progress {
+    width: 100px;
+    height: 3px;
+    background-color: #eee;
+    margin: 0 auto 15px auto; }
+    #preloader .progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background-color: #555}
+  #preloader.is-hidden {
+    visibility: hidden;
+    opacity: 0; }
+
+.is-loading {
+  overflow: hidden; }
+
+
+
+#scroll-hint {
+  visibility:hidden;
+  color: #212121;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  padding: 10px 40px;
+  
+  font-size: 13px;
+  font-weight: bold;
+  font-family: 'Roboto Condensed', Helvetica, Helvetica Neue, Arial, sans-serif;
+  
+  z-index: 2; }
