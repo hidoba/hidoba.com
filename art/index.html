@@ -10,12 +10,18 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
     <body id="page-top">
 
     <!-- Intro Header -->
-    <header class="intro content-section" style="padding: 0; position: fixed; top: 0; left: 0; height: 100%">
-        <div class="intro-body">
-            <div class="container">
-                <div class="row" style="padding-top: 50px">
-                    <p class="big" style="font-size: 150pt; line-height: 0.6">BIG</p>
-                    <p class="big" style="font-size: 30pt">change is coming<br>
+    <header class="intro content-section" style="padding: 0; top: 0; left: 0; height: 100%">
+        <div id="intro" class="intro" style="position: absolute; top:0; left:0; width: 100%; height: 100%; overflow: hidden;">
+            <div id="interchangeContainer" style="position: absolute; top:0; left:0; width: 100%; height: 100%; overflow: hidden">
+                
+                <canvas id="interchange" style="width: 100%; height: 100%; top: 0;"></canvas>
+            </div>
+            <div class="intro-body" style="position: relative; height: 100%; vertical-align: middle;">
+                <div class="container">
+                    <div class="row" style="padding-top: 50px">
+                        <p id="txtBig" class="big" style="font-size: 150pt; line-height: 0.6">BIG</p>
+                        <p class="big" style="font-size: 30pt">change is coming<br></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -23,19 +29,14 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
     </header>
 
     <!-- Main section -->
-    <section id="about" style="position: relative; margin-top:100vh; background: white; color: white; text-shadow: 1px 1px 15px #000, 1px 1px 10px #555; padding-top: 80px; padding-bottom: 100px">
-        <div style="position: absolute; top:0; left:0; width: 100%; height: 100%; overflow: hidden">
-            <img id="interchangeIMG" style="width: 100%; top: 0" src="interchange/62.jpg" />
-            <canvas id="interchange" style="width: 100%; height: 100%; top: 0;"></canvas>
-        </div>
-        <div class="spacer s0" id="trigger"></div>
+    <section id="about" style="margin-top:100vh;">
         <div class="container content-section">
             <div class="row">
                 <div class="col-md-7 col-md-offset-3 col-sm-10 col-sm-offset-1">
                     <h2>Hidoba AI / Robotic Art exhibition</h2>
-                    <p>scheduled for <span style="font-size: 20pt; text-decoration: underline;">late July 2020, Hong Kong</span>.</p>
+                    <p>scheduled for <span style="text-decoration: underline;">late July 2020, Hong Kong</span>.</p>
 
-                    <p>Make sure to be first to see and hear how the art will be changed forever.</p>
+                    <p>Make sure to be first to see and hear how Art will be changed forever.</p>
                 
                 </div>
             </div>
@@ -103,27 +104,34 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
         var ctx = canvas.getContext("2d");
         const about = document.getElementById('about');
         var controller = new ScrollMagic.Controller();;
-        var scene = new ScrollMagic.Scene({offset:100});
+        var scene = new ScrollMagic.Scene({offset:0});
         let scrollpos = 0;
+        let lastpos = -1;
         function scrollPlay(){
-            var deviceWidth = about.clientWidth;
-            var deviceHeight = about.clientHeight;
-            canvas.width = deviceWidth;
-            canvas.height = deviceHeight;
-            var scale = deviceWidth / img.width;
-            ctx.drawImage(images[scrollpos], 0, 0, deviceWidth, img.height * scale);
+            if (scrollpos != lastpos){
+                var deviceWidth = window.innerWidth;
+                var deviceHeight = window.innerHeight;
+                canvas.width = deviceWidth;
+                canvas.height = deviceHeight;
+                var scale = deviceWidth / img.width;
+                var y = Math.max((deviceHeight - img.height * scale) / 2, 0);
+                ctx.drawImage(images[scrollpos], 0, y, deviceWidth, img.height * scale);
+            }
+            lastpos = scrollpos;
             window.requestAnimationFrame(scrollPlay);
         }
         images[0].onload = function() {
             scene.addTo(controller)
                 .addIndicators() // add indicators (requires plugin)
-                .duration(about.clientHeight + window.innerHeight / 2 - 100)
+                .duration(window.innerHeight)
+                .setPin("#intro")
+                .setTween("#txtBig", {scale: 3, opacity:0})
                 .on("progress", function (e) {
                     scrollpos = Math.round(e.progress*(totalImages-1));
                     //console.log(scrollpos);
                 });
             window.requestAnimationFrame(scrollPlay);
-            $("#interchangeIMG").hide();
+            // $("#interchangeIMG").hide();
         };
 
 
