@@ -145,12 +145,10 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
             $("body").attr("class", "");
             preloaderOutTl
                 .add([
-                    TweenMax.to($('#interchangeContainer'), 0.5, {autoAlpha: 1, ease:Back.easeIn}),
-                    TweenMax.to($('.progress'), 0.3, {y: 100, autoAlpha: 0, ease:Back.easeIn}),
+                    TweenMax.to($('#interchangeContainer'), 0.7, {autoAlpha: 1, ease:Back.easeIn}),
+                    TweenMax.to($('.progress'), 0.5, {y: 100, autoAlpha: 0, ease:Back.easeIn}),
                     TweenMax.to($('.txt-perc'), 0.3, {y: 100, autoAlpha: 0, ease:Back.easeIn}),
-                    //.set($('body'), {className: '-=is-loading'})
                     TweenMax.to($('#preloader'), 0.7, {yPercent: 100, ease:Power4.easeInOut}),
-                    TweenMax.set($('#preloader'), {className: '+=is-hidden'}),
                     TweenMax.from($('#scroll-hint'), 0.3, {y: -20, autoAlpha: 0, ease:Power1.easeOut})
                     ]);
             return preloaderOutTl;
