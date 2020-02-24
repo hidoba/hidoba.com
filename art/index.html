@@ -90,6 +90,32 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
         let oldDeviceHeight = -1;
         var canvasTmp = document.createElement('canvas');
         var ctxTmp = canvasTmp.getContext('2d');
+
+        function renderOneFrame(i) {
+            return new Promise(resolve => {
+                ctxTmp.drawImage(imagesStrokes[i], 0, 0, canvasTmp.width, canvasTmp.height);
+                images.push(ctxTmp.getImageData(0, 0, canvasTmp.width, canvasTmp.height));
+                resolve();
+            });
+        }
+
+        async function renderImages() {
+            console.log("loaded all. rendering.");
+            canvasTmp.width = imagesStrokes[0].width;
+            canvasTmp.height = imagesStrokes[0].height;
+            ctxTmp.fillStyle = "#FFF";
+            ctxTmp.fillRect(0, 0, canvasTmp.width, canvasTmp.height);
+            for(var j = 0; j < totalImages; j++){
+                await renderOneFrame(j);
+                loadingProgress = 0.95 + 0.05 * j * 1.0 / totalImages;
+                TweenLite.to(progressTl, 0.7, {progress:loadingProgress, ease:Linear.easeNone})
+                //ctxTmp.drawImage(imagesStrokes[j], 0, 0, canvasTmp.width, canvasTmp.height);
+                //images.push(ctxTmp.getImageData(0, 0, canvasTmp.width, canvasTmp.height));
+            }
+            TweenLite.to(progressTl, 0.7, {progress:1, ease:Linear.easeNone})
+            initPaintingAnimation();
+        }
+
         for (var i = 1; i <= totalImages; i++) {
             var img = new Image;
             img.onload = function(){
@@ -98,17 +124,7 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
                 loadingProgress = 0.95*(loadedCount/totalImages);
                 TweenLite.to(progressTl, 0.7, {progress:loadingProgress, ease:Linear.easeNone})
                 if (loadedCount == totalImages) {
-                    console.log("loaded all. rendering.");
-                    canvasTmp.width = imagesStrokes[0].width;
-                    canvasTmp.height = imagesStrokes[0].height;
-                    ctxTmp.fillStyle = "#FFF";
-                    ctxTmp.fillRect(0, 0, canvasTmp.width, canvasTmp.height);
-                    for(var j = 0; j < totalImages; j++){
-                        ctxTmp.drawImage(imagesStrokes[j], 0, 0, canvasTmp.width, canvasTmp.height);
-                        images.push(ctxTmp.getImageData(0, 0, canvasTmp.width, canvasTmp.height))
-                    }
-                    TweenLite.to(progressTl, 0.7, {progress:1, ease:Linear.easeNone})
-                    initPaintingAnimation();
+                    renderImages();
                 }
             };
             img.src = 'interchange/' + i + '.png'
@@ -143,13 +159,14 @@ scripts: <script type="text/javascript" src="/js/jquery.js"></script><script typ
         let lastpos = -1;
 
         function scrollPlay(){
-            var deviceWidth = window.innerWidth * 2;
-            var deviceHeight = window.document.documentElement.clientHeight * 2; // stable on mobile
+            var deviceWidth = window.innerWidth;
+            var deviceHeight = window.document.documentElement.clientHeight; // stable on mobile
             if (scrollpos != lastpos || oldDeviceWidth != deviceWidth || oldDeviceHeight != deviceHeight){
                 canvas.width = imagesStrokes[0].width;
                 canvas.height = deviceHeight / deviceWidth * imagesStrokes[0].width;
                 var scale = deviceWidth / images[scrollpos].width;
-                var y = Math.max((deviceHeight - images[scrollpos].height * scale) / 2, 0);
+                var y = Math.max(((deviceHeight - images[scrollpos].height * scale) / 2) * (canvas.width / deviceWidth), 0);
+                //var y = Math.max((deviceHeight - images[scrollpos].height * scale) / 2, 0);
                 ctx.putImageData(images[scrollpos], 0, y);
                 lastpos = scrollpos;
                 oldDeviceWidth = deviceWidth;
